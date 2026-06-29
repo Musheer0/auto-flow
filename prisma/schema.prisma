@@ -11,8 +11,54 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
-
 model Workflow {
   id String @id @default(cuid())
-  name String 
+  name String @default("Untitled Workflow")
+  description String? 
+  user_id String 
+  org_id  String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  nodes Node[]
+  @@index([org_id])
+  @@index([user_id])
+  @@index([org_id, user_id])
+}
+enum NodeType {
+  TELEGRAM_BOT_TOKEN
+  MANUAL_TRIGGER
+  HTTP_REQUEST
+  SEND_DISCORD_MESSAGE
+  WEBHOOK
+}
+
+model Node {
+  id String @id @default(cuid())
+  node_name String
+  data  Json  @default("{}")
+  userId String 
+  type NodeType
+  positionX Int @default(50)
+  positionY Int @default(50)
+  workflow_id String
+  workflow Workflow @relation(references: [id], fields: [workflow_id], onDelete: Cascade)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  @@index([userId])
+}
+
+model Credentials {
+  id String @id @default(cuid())
+  name String @default("Untitled Workflow")
+  description String? 
+  secret String
+  user_id String 
+  type NodeType 
+  org_id  String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  @@index([org_id])
+  @@index([user_id])
+  @@index([org_id, user_id])
+  @@index([org_id, user_id, name])
 }

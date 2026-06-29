@@ -1,18 +1,11 @@
 import { z } from 'zod';
 import { baseProcedure, createTRPCRouter } from '../init';
- 
+import { workflowsRouter } from './workflow.router';
+import { credentialsRouter } from './credentials.router';
+
 export const appRouter = createTRPCRouter({
-  hello: baseProcedure
-    .input(
-      z.object({
-        text: z.string(),
-      }),
-    )
-    .query((opts) => {
-      return {
-        greeting: `hello ${opts.input.text}`,
-      };
-    }),
+  workflows:workflowsRouter,
+  credentials:credentialsRouter,
 });
  
 // export type definition of API

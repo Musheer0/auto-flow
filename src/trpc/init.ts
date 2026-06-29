@@ -1,4 +1,5 @@
-import { initTRPC } from '@trpc/server';
+import { auth } from '@clerk/nextjs/server';
+import { initTRPC, TRPCError } from '@trpc/server';
 import { cache } from 'react';
  
 export const createTRPCContext = cache(async () => {
@@ -23,3 +24,9 @@ const t = initTRPC.create({
 export const createTRPCRouter = t.router;
 export const createCallerFactory = t.createCallerFactory;
 export const baseProcedure = t.procedure;
+export const protectedProcudre = baseProcedure.use(async({ctx,next})=>{
+  const user = await auth()
+  if(user.userId && user.orgId) 
+  return next({ctx:{...ctx,session:user}})
+  else throw new TRPCError({code:"UNAUTHORIZED"})
+})
