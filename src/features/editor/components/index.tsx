@@ -1,21 +1,28 @@
 "use client";
-import { ReactFlow, Background, Panel, useReactFlow } from "@xyflow/react";
+import { Background, Panel, ReactFlow, useReactFlow } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import { NodeSheet } from "./node-sheet";
-import { Button } from "../../../components/ui/button";
 import { PlusIcon } from "lucide-react";
-import { type NodeType } from "@/generated/prisma/enums";
-import { useEditorStore } from "@/features/editor/hooks/use-editor-store";
-import { nodeTypes } from "@/constants/nodes-ui";
-import SaveChangesButton from "./save-changes-button";
-import { useCurrentWorkflow } from "@/hooks/workflows/use-current-workflow";
-import { transformServerDataToReactFlowData } from "@/features/editor/utils/transform-data";
 import { useEffect, useRef } from "react";
+import { nodeTypes } from "@/constants/nodes-ui";
+import { useEditorStore } from "@/features/editor/hooks/use-editor-store";
+import { transformServerDataToReactFlowData } from "@/features/editor/utils/transform-data";
+import type { NodeType } from "@/generated/prisma/enums";
+import { useCurrentWorkflow } from "@/hooks/workflows/use-current-workflow";
+import { Button } from "../../../components/ui/button";
+import { NodeSheet } from "./node-sheet";
+import SaveChangesButton from "./save-changes-button";
 
 export default function Editor() {
-  const { nodes, edges, viewport, onNodesChange, onEdgesChange, onConnect, addNode, setViewport } =
-    useEditorStore();
-
+  const {
+    nodes,
+    edges,
+    viewport,
+    onNodesChange,
+    onEdgesChange,
+    onConnect,
+    addNode,
+    setViewport,
+  } = useEditorStore();
 
   const onAdd = (type: NodeType) => {
     addNode(type);
@@ -23,7 +30,6 @@ export default function Editor() {
 
   return (
     <div className="w-full h-full flex-1 ">
-
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -34,6 +40,8 @@ export default function Editor() {
         viewport={viewport}
         snapGrid={[20, 20]}
         nodeTypes={nodeTypes}
+        deleteKeyCode={["Backspace", "Delete"]}
+        fitView
       >
         <Background />
         <Panel position="bottom-center">

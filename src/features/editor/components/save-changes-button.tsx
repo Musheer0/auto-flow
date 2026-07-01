@@ -1,7 +1,7 @@
 "use client";
 
-import React from "react";
 import { useParams } from "next/navigation";
+import React from "react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -11,7 +11,7 @@ import { transformReactFlowDataToServerData } from "../utils/transform-data";
 
 const SaveChangesButton = () => {
   const { nodes, edges, viewport } = useEditorStore();
-  const { id} = useParams<{ id: string }>();
+  const { id } = useParams<{ id: string }>();
 
   const { mutateAsync, isPending } = useSaveWorkflow();
 
@@ -22,18 +22,14 @@ const SaveChangesButton = () => {
       await toast.promise(
         mutateAsync({
           workflow_id: id,
-          data: transformReactFlowDataToServerData(
-            nodes,
-            edges,
-            viewport
-          ),
+          data: transformReactFlowDataToServerData(nodes, edges, viewport),
         }),
         {
           loading: "Saving workflow...",
           success: "Workflow saved successfully!",
           error: (err) =>
             err instanceof Error ? err.message : "Failed to save workflow.",
-        }
+        },
       );
     } catch {
       // toast.promise already shows the error toast

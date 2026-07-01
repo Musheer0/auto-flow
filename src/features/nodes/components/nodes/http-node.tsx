@@ -1,23 +1,18 @@
-import {
-  BaseNode,
-  BaseNodeContent,
-  BaseNodeFooter,
-  BaseNodeHeader,
-} from "@/components/base-node";
-import { Handle, Node, NodeProps, NodeToolbar, Position } from "@xyflow/react";
-import { GlobeIcon, MouseIcon } from "lucide-react";
-import React from "react";
+import type { Node, NodeProps } from "@xyflow/react";
+import { GlobeIcon } from "lucide-react";
+import { BaseNodeContent } from "@/components/base-node";
+import { Button } from "@/components/ui/button";
 import BaseWorkflowNode from "../base-workflow-node";
+import { useFormDialog } from "../forms/form-dialog-provider";
 
 const HttpNode = (data: NodeProps<Node>) => {
+  const { open } = useFormDialog();
   return (
-    <BaseWorkflowNode
-      name={data.type.split("_").join(" ").toLowerCase() + " node"}
-      type={data.type as any}
-      action="EXECUTION"
-    >
+    <BaseWorkflowNode data={data}>
       <BaseNodeContent>
-        <GlobeIcon size={14} />
+        <Button variant={"ghost"} size={"icon"} onClick={() => open(data)}>
+          <GlobeIcon size={14} />
+        </Button>
       </BaseNodeContent>
     </BaseWorkflowNode>
   );

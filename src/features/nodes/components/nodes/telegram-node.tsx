@@ -1,26 +1,27 @@
-import {
-  BaseNode,
-  BaseNodeContent,
-  BaseNodeFooter,
-  BaseNodeHeader,
-} from "@/components/base-node";
-import { Handle, Node, NodeProps, NodeToolbar, Position } from "@xyflow/react";
-import React from "react";
+import type { Node, NodeProps } from "@xyflow/react";
+import { BaseNodeContent } from "@/components/base-node";
+import { Button } from "@/components/ui/button";
 import BaseWorkflowNode from "../base-workflow-node";
+import { useFormDialog } from "../forms/form-dialog-provider";
 
 const TelegramNode = (data: NodeProps<Node>) => {
+  const { open } = useFormDialog();
   return (
-    <BaseWorkflowNode
-      name={data.type.split("_").join(" ").toLowerCase() + " node"}
-      type={data.type as any}
-      action="EXECUTION"
-    >
+    <BaseWorkflowNode data={data}>
       <BaseNodeContent>
-        <img
-          src="https://cdn.simpleicons.org/telegram"
-          alt="telegram"
-          className="size-4"
-        />
+        <Button
+          onClick={() => {
+            open(data);
+          }}
+          variant={"ghost"}
+          size={"icon"}
+        >
+          <img
+            src="https://cdn.simpleicons.org/telegram"
+            alt="telegram"
+            className="size-4"
+          />
+        </Button>
       </BaseNodeContent>
     </BaseWorkflowNode>
   );

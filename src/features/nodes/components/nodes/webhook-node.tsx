@@ -1,23 +1,18 @@
-import {
-  BaseNode,
-  BaseNodeContent,
-  BaseNodeFooter,
-  BaseNodeHeader,
-} from "@/components/base-node";
-import { Handle, Node, NodeProps, NodeToolbar, Position } from "@xyflow/react";
-import { GlobeIcon, MouseIcon, WebhookIcon } from "lucide-react";
-import React from "react";
+import type { Node, NodeProps } from "@xyflow/react";
+import { WebhookIcon } from "lucide-react";
+import { BaseNodeContent } from "@/components/base-node";
+import { Button } from "@/components/ui/button";
 import BaseWorkflowNode from "../base-workflow-node";
+import { useFormDialog } from "../forms/form-dialog-provider";
 
 const WebhookNode = (data: NodeProps<Node>) => {
+  const { open } = useFormDialog();
   return (
-    <BaseWorkflowNode
-      name={data.type.split("_").join(" ").toLowerCase() + " node"}
-      type={data.type as any}
-      action="TRIGGER"
-    >
+    <BaseWorkflowNode data={data}>
       <BaseNodeContent>
-        <WebhookIcon />
+        <Button variant={"ghost"} size={"icon"} onClick={() => open(data)}>
+          <WebhookIcon />
+        </Button>
       </BaseNodeContent>
     </BaseWorkflowNode>
   );

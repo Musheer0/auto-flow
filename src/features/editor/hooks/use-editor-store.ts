@@ -1,20 +1,22 @@
 "use client";
 
-import { create } from "zustand";
-import {
-  type Node,
-  type Edge,
-  type Viewport,
-  type OnNodesChange,
-  type OnEdgesChange,
-  type OnConnect,
-  applyNodeChanges,
-  applyEdgeChanges,
-  addEdge,
-} from "@xyflow/react";
-import { type NodeType } from "@/generated/prisma/enums";
-import { nodeUiList } from "@/constants/node-sidebar";
 import { createId } from "@paralleldrive/cuid2";
+import {
+  addEdge,
+  applyEdgeChanges,
+  applyNodeChanges,
+  type Edge,
+  type Node,
+  type OnConnect,
+  type OnEdgesChange,
+  type OnNodesChange,
+  type Viewport,
+} from "@xyflow/react";
+import { toast } from "sonner";
+import { create } from "zustand";
+import { nodeUiList } from "@/constants/node-sidebar";
+import { isDuplicateTrigger } from "@/features/editor/utils/duplicate-trigger";
+import type { NodeType } from "@/generated/prisma/enums";
 
 type EditorState = {
   nodes: Node[];
@@ -24,6 +26,8 @@ type EditorState = {
   onEdgesChange: OnEdgesChange;
   onConnect: OnConnect;
   addNode: (type: NodeType) => void;
+  deleteNode: (id: string) => void;
+  updateNodeData: (id: string, data: Record<string, unknown>) => void;
   setViewport: (viewport: Viewport) => void;
   initialize: (nodes: Node[], edges: Edge[], viewport: Viewport) => void;
 };
@@ -46,6 +50,10 @@ export const useEditorStore = create<EditorState>((set, get) => ({
   },
 
   addNode: (type) => {
+    if (isDuplicateTrigger(type, get().nodes)) {
+      toast.error(`Only one "${type}" trigger is allowed`);
+      return;
+    }
     const nodeInfo = nodeUiList[type];
     const newNode: Node = {
       id: createId(),
@@ -61,12 +69,27 @@ export const useEditorStore = create<EditorState>((set, get) => ({
     set({ nodes: [...get().nodes, newNode] });
   },
 
+  deleteNode: (id) => {
+    set({
+      nodes: get().nodes.filter((n) => n.id !== id),
+      edges: get().edges.filter((e) => e.source !== id && e.target !== id),
+    });
+  },
+
+  updateNodeData: (id, data) => {
+    set({
+      nodes: get().nodes.map((n) =>
+        n.id === id ? { ...n, data: { ...n.data, ...data } } : n,
+      ),
+    });
+  },
+
   setViewport: (viewport) => {
     set({ viewport });
   },
 
   initialize: (nodes, edges, viewport) => {
-    console.log(nodes,edges,viewport)
+    console.log(nodes, edges, viewport);
     set({ nodes, edges, viewport });
   },
 }));

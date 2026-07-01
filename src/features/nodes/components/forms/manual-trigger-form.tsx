@@ -17,30 +17,29 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useEditorStore } from "@/features/editor/hooks/use-editor-store";
-import { webhookSchema } from "@/features/nodes/schemas/node-forms.schema";
+import { manualTriggerSchema } from "@/features/nodes/schemas/node-forms.schema";
 import { useFormDialog } from "./form-dialog-provider";
-import { KeyValueInput } from "./key-value-input";
 
-type FormValues = z.infer<typeof webhookSchema>;
+type FormValues = z.infer<typeof manualTriggerSchema>;
 
-export function WebhookForm({ data }: { data: NodeProps<Node> }) {
+export function ManualTriggerForm({ data }: { data: NodeProps<Node> }) {
   const updateNodeData = useEditorStore((s) => s.updateNodeData);
   const { close } = useFormDialog();
   const form = useForm<FormValues>({
-    resolver: zodResolver(webhookSchema),
+    resolver: zodResolver(manualTriggerSchema),
     defaultValues: data.data as FormValues,
   });
 
   function onSubmit(formData: FormValues) {
     updateNodeData(data.id, formData);
-    toast("Webhook saved");
+    toast("Manual Trigger saved");
     close();
   }
 
   return (
     <FormProvider {...form}>
       <form
-        id="form-webhook"
+        id="form-manual"
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-4"
       >
@@ -51,24 +50,10 @@ export function WebhookForm({ data }: { data: NodeProps<Node> }) {
             <FormItem>
               <FormLabel required>Node Name</FormLabel>
               <FormControl>
-                <Input {...field} placeholder="My Webhook" autoComplete="off" />
-              </FormControl>
-              {fieldState.error && <FormMessage />}
-            </FormItem>
-          )}
-        />
-        <FormField
-          name="headers"
-          control={form.control}
-          render={({ field, fieldState }) => (
-            <FormItem>
-              <FormLabel required>Headers</FormLabel>
-              <FormControl>
-                <KeyValueInput
-                  value={field.value ?? {}}
-                  onChange={field.onChange}
-                  keyPlaceholder="header name"
-                  valuePlaceholder="header value"
+                <Input
+                  {...field}
+                  placeholder="My Manual Trigger"
+                  autoComplete="off"
                 />
               </FormControl>
               {fieldState.error && <FormMessage />}
@@ -79,7 +64,7 @@ export function WebhookForm({ data }: { data: NodeProps<Node> }) {
           <Button type="button" variant="outline" onClick={() => form.reset()}>
             Reset
           </Button>
-          <Button type="submit" form="form-webhook">
+          <Button type="submit" form="form-manual">
             Save
           </Button>
         </div>

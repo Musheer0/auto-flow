@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { getById } from "@/data/workflow";
 import { WorkflowProvider } from "@/contexts/workflow-context";
 import { PageContent } from "./page-content";
+import { FormDialogProvider } from "@/features/nodes/components/forms/form-dialog-provider";
 
 export default async function WorkflowPage({
   params,
@@ -29,7 +30,9 @@ export default async function WorkflowPage({
   console.dir(initialData,null)
   return (
     <WorkflowProvider id={id} initialData={initialData}>
-      <PageContent />
+      <FormDialogProvider>
+        <PageContent />
+      </FormDialogProvider>
     </WorkflowProvider>
   );
 }

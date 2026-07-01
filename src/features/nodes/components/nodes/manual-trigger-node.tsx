@@ -1,22 +1,18 @@
-import {
-  BaseNode,
-  BaseNodeContent,
-  BaseNodeHeader,
-} from "@/components/base-node";
-import { Handle, Node, NodeProps, Position } from "@xyflow/react";
+import type { Node, NodeProps } from "@xyflow/react";
 import { MouseIcon } from "lucide-react";
-import React from "react";
+import { BaseNodeContent } from "@/components/base-node";
+import { Button } from "@/components/ui/button";
 import BaseWorkflowNode from "../base-workflow-node";
+import { useFormDialog } from "../forms/form-dialog-provider";
 
 const ManualTriggerNode = (data: NodeProps<Node>) => {
+  const { open } = useFormDialog();
   return (
-    <BaseWorkflowNode
-      type={data.type as any}
-      action="TRIGGER"
-      name={data.type.split("_").join(" ").toLowerCase() + " node"}
-    >
+    <BaseWorkflowNode data={data}>
       <BaseNodeContent>
-        <MouseIcon />
+        <Button variant={"ghost"} size={"icon"} onClick={() => open(data)}>
+          <MouseIcon />
+        </Button>
       </BaseNodeContent>
     </BaseWorkflowNode>
   );

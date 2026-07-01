@@ -1,11 +1,11 @@
-import { NodeType } from "@/generated/prisma/enums";
-import { tWorkflowDataSchema } from "@/schemas/editor";
-import { Edge, Node, Viewport } from "@xyflow/react";
+import type { Edge, Node, Viewport } from "@xyflow/react";
+import type { NodeType } from "@/generated/prisma/enums";
+import type { tWorkflowDataSchema } from "@/schemas/editor";
 
 export const transformReactFlowDataToServerData = (
   nodes: Node[],
   edges: Edge[],
-  viewport: Viewport
+  viewport: Viewport,
 ): tWorkflowDataSchema => {
   return {
     view_port: viewport,
@@ -15,19 +15,18 @@ export const transformReactFlowDataToServerData = (
       target: edge.target,
       sourceHandle: edge.sourceHandle!,
       targetHandle: edge.targetHandle!,
-
     })),
     nodes: nodes.map((node) => ({
       id: node.id,
       type: node.type as NodeType,
       position: node.position,
       data: node.data,
-      node_name: node.data.node_name as string || "untitled_node"
+      node_name: (node.data.node_name as string) || "untitled_node",
     })),
   };
 };
 export const transformServerDataToReactFlowData = (
-  workflow: tWorkflowDataSchema
+  workflow: tWorkflowDataSchema,
 ): {
   nodes: Node[];
   edges: Edge[];

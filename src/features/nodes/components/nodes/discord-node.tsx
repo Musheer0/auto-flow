@@ -1,26 +1,21 @@
-import {
-  BaseNode,
-  BaseNodeContent,
-  BaseNodeFooter,
-  BaseNodeHeader,
-} from "@/components/base-node";
-import { Handle, Node, NodeProps, NodeToolbar, Position } from "@xyflow/react";
-import React from "react";
+import type { Node, NodeProps } from "@xyflow/react";
+import { BaseNodeContent } from "@/components/base-node";
+import { Button } from "@/components/ui/button";
 import BaseWorkflowNode from "../base-workflow-node";
+import { useFormDialog } from "../forms/form-dialog-provider";
 
 const DiscordNode = (data: NodeProps<Node>) => {
+  const { open } = useFormDialog();
   return (
-    <BaseWorkflowNode
-      name={data.type.split("_").join(" ").toLowerCase() + " node"}
-      type={data.type as any}
-      action="EXECUTION"
-    >
+    <BaseWorkflowNode data={data}>
       <BaseNodeContent>
-        <img
-          src="https://cdn.simpleicons.org/discord"
-          alt="discord"
-          className="size-4"
-        />
+        <Button variant={"ghost"} size={"icon"} onClick={() => open(data)}>
+          <img
+            src="https://cdn.simpleicons.org/discord"
+            alt="discord"
+            className="size-4"
+          />
+        </Button>
       </BaseNodeContent>
     </BaseWorkflowNode>
   );

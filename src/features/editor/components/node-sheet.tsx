@@ -1,9 +1,8 @@
 "use client";
 
-import * as React from "react";
+import { useNodes } from "@xyflow/react";
 import { SearchIcon } from "lucide-react";
-
-import { NodeAction, NodeType } from "@/generated/prisma/enums";
+import * as React from "react";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import {
@@ -14,7 +13,9 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { NodeListUiArray } from "@/constants/node-sidebar";
-import { useNodes, useNodesState, useReactFlow } from "@xyflow/react";
+import { useEditorStore } from "@/features/editor/hooks/use-editor-store";
+import { isDuplicateTrigger } from "@/features/editor/utils/duplicate-trigger";
+import { NodeAction, type NodeType } from "@/generated/prisma/enums";
 
 type NodeSheetProps = {
   onClick: (type: NodeType) => void;
@@ -26,6 +27,7 @@ function NodeSheet({ onClick, children }: NodeSheetProps) {
   const [actionFilter, setActionFilter] = React.useState<NodeAction | null>(
     null,
   );
+  const nodes = useEditorStore((s) => s.nodes);
 
   const filteredNodes = NodeListUiArray.filter((node) => {
     const matchesSearch = node.name
@@ -75,8 +77,9 @@ function NodeSheet({ onClick, children }: NodeSheetProps) {
                 <button
                   key={node.type}
                   type="button"
+                  disabled={isDuplicateTrigger(node.type, nodes)}
                   onClick={() => onClick(node.type)}
-                  className="flex w-full items-center gap-3 rounded-md px-2 py-2 text-left hover:bg-muted"
+                  className="flex w-full items-center gap-3 rounded-md px-2 py-2 text-left hover:bg-muted disabled:opacity-40 disabled:pointer-events-none"
                 >
                   <div className="flex size-8 items-center justify-center rounded-md bg-muted">
                     {typeof Icon === "string" ? (

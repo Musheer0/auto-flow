@@ -1,40 +1,59 @@
+import {
+  Handle,
+  type Node,
+  type NodeProps,
+  NodeToolbar,
+  Position,
+} from "@xyflow/react";
+import { TrashIcon } from "lucide-react";
+import type React from "react";
 import { BaseNode } from "@/components/base-node";
-import { NodeAction, NodeType } from "@/generated/prisma/enums";
+import { Button } from "@/components/ui/button";
+import { nodeUiList } from "@/constants/node-sidebar";
+import { useEditorStore } from "@/features/editor/hooks/use-editor-store";
+import type { NodeType } from "@/generated/prisma/enums";
 import { cn } from "@/lib/utils";
-import { Handle, NodeToolbar, Position } from "@xyflow/react";
-import React from "react";
 
 interface props {
-  name?: string;
-  type: NodeType;
-  action: NodeAction;
+  data: NodeProps<Node>;
   children: React.ReactNode;
 }
 
-const BaseWorkflowNode: React.FC<props> = ({
-  name,
-  type,
-  action,
-  children,
-}) => {
+const BaseWorkflowNode: React.FC<props> = ({ data, children }) => {
+  const { deleteNode } = useEditorStore();
+  const nodeInfo = nodeUiList[data.type as NodeType];
+  const name = nodeInfo?.name ?? data.type;
+  const action = nodeInfo?.action ?? "EXECUTION";
   return (
-    <BaseNode className={cn(action === "TRIGGER" ? "rounded-r-none" : "")}>
+    <BaseNode
+      className={cn(action === "TRIGGER" ? "rounded-r-none" : "", "relative")}
+    >
+      <NodeToolbar
+        className="flex gap-3
+       items-center justify-between"
+        isVisible
+        position={Position.Top}
+      >
+        <Button
+          size={"icon-sm"}
+          variant={"destructive"}
+          onClick={() => deleteNode(data.id)}
+        >
+          <TrashIcon />
+        </Button>
+      </NodeToolbar>
       {children}
       {action === "TRIGGER" ? (
-        <>
-          <Handle position={Position.Right} type="source" id="source" />
-        </>
+        <Handle position={Position.Right} type="source" id="source" />
       ) : (
         <>
           <Handle position={Position.Left} type="target" id="target" />
           <Handle position={Position.Right} type="source" id="source" />
         </>
       )}
-      {name && (
-        <NodeToolbar isVisible position={Position.Bottom}>
-          <p className="text-xs text-muted-foreground">{name}</p>
+       <NodeToolbar isVisible position={Position.Bottom}>
+          <p className="text-xs text-muted-foreground">{data.data?.node_name as string||name}</p>
         </NodeToolbar>
-      )}
     </BaseNode>
   );
 };

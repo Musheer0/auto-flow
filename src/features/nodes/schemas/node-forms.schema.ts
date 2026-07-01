@@ -1,5 +1,5 @@
 import z from "zod";
-import { NodeType } from "@/generated/prisma/enums";
+import type { NodeType } from "@/generated/prisma/enums";
 
 export const defaultSchema = z.object({
   node_name: z.string().min(1),
@@ -8,7 +8,7 @@ export const defaultSchema = z.object({
 export const httpSchema = defaultSchema.extend({
   url: z.string().url(),
   method: z.enum(["GET", "POST", "PUT", "PATCH", "DELETE"]),
-  headers: z.record(z.string(), z.string()),
+  headers: z.record(z.string(), z.string()).optional(),
   body: z.string().optional(),
 });
 
@@ -24,7 +24,7 @@ export const discordSchema = defaultSchema.extend({
 });
 
 export const webhookSchema = defaultSchema.extend({
-  headers: z.record(z.string(), z.string()),
+  headers: z.record(z.string(), z.string()).optional(),
 });
 
 export const manualTriggerSchema = defaultSchema;
