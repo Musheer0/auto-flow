@@ -1,15 +1,15 @@
-import { Redis } from '@upstash/redis'
+import { Redis } from "@upstash/redis";
 
 const redisClientSingleton = () => {
-  return Redis.fromEnv()
-}
+  return Redis.fromEnv();
+};
 
 declare const globalThis: {
-  redisGlobal: ReturnType<typeof redisClientSingleton>
-} & typeof global
+  redisGlobal: ReturnType<typeof redisClientSingleton>;
+} & typeof global;
 
-const redis = globalThis.redisGlobal ?? redisClientSingleton()
+const redis = globalThis.redisGlobal ?? redisClientSingleton();
 
-export default redis
+export default redis;
 
-if (process.env.NODE_ENV !== 'production') globalThis.redisGlobal = redis
+if (process.env.NODE_ENV !== "production") globalThis.redisGlobal = redis;

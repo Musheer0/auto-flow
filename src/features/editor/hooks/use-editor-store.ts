@@ -14,6 +14,7 @@ import {
 } from "@xyflow/react";
 import { type NodeType } from "@/generated/prisma/enums";
 import { nodeUiList } from "@/constants/node-sidebar";
+import { createId } from "@paralleldrive/cuid2";
 
 type EditorState = {
   nodes: Node[];
@@ -24,6 +25,7 @@ type EditorState = {
   onConnect: OnConnect;
   addNode: (type: NodeType) => void;
   setViewport: (viewport: Viewport) => void;
+  initialize: (nodes: Node[], edges: Edge[], viewport: Viewport) => void;
 };
 
 export const useEditorStore = create<EditorState>((set, get) => ({
@@ -46,7 +48,7 @@ export const useEditorStore = create<EditorState>((set, get) => ({
   addNode: (type) => {
     const nodeInfo = nodeUiList[type];
     const newNode: Node = {
-      id: crypto.randomUUID(),
+      id: createId(),
       type,
       position: {
         x: 50 + Math.random() * 200,
@@ -61,5 +63,10 @@ export const useEditorStore = create<EditorState>((set, get) => ({
 
   setViewport: (viewport) => {
     set({ viewport });
+  },
+
+  initialize: (nodes, edges, viewport) => {
+    console.log(nodes,edges,viewport)
+    set({ nodes, edges, viewport });
   },
 }));

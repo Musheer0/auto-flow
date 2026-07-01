@@ -103,7 +103,7 @@ export async function createCredential(
         org_id: orgId,
         user_id: userId,
         name: name?.trim() || "Untitled Credential",
-        type: type ,
+        type: type,
         secret: encryptedSecret,
       },
     }),

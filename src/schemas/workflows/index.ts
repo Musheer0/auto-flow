@@ -2,11 +2,14 @@ import { z } from "zod";
 
 export const getWorkflowsSchema = z.object({
   orgId: z.string().min(1),
+
 });
 
 export const getByWorkflowIdSchema = z.object({
   id: z.string().min(1),
   orgId: z.string().min(1),
+    include_data:z.boolean().default(false).optional()
+
 });
 
 export const createWorkflowSchema = z.object({

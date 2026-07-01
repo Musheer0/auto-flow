@@ -2,9 +2,7 @@ import Editor from "@/features/editor/components/";
 import React from "react";
 
 const page = () => {
-  return (
-      <Editor />
-  );
+  return <Editor />;
 };
 
 export default page;

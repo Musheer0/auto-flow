@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 
-import { NavDocuments } from "@/components/nav-documents"
-import { NavMain } from "@/components/nav-main"
-import { NavSecondary } from "@/components/nav-secondary"
+import { NavDocuments } from "@/components/nav-documents";
+import { NavMain } from "@/components/nav-main";
+import { NavSecondary } from "@/components/nav-secondary";
 import {
   Sidebar,
   SidebarContent,
@@ -13,30 +13,44 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
-import { OrganizationSwitcher, UserButton } from "@clerk/nextjs"
-import { LayoutDashboardIcon, ListIcon, ChartBarIcon, FolderIcon, UsersIcon, ShieldIcon, CameraIcon, FileTextIcon, Settings2Icon, CircleHelpIcon, SearchIcon, DatabaseIcon, FileChartColumnIcon, FileIcon, CommandIcon, WorkflowIcon, KeyIcon, FlowerIcon } from "lucide-react"
-import { Skeleton } from "./ui/skeleton"
+} from "@/components/ui/sidebar";
+import { OrganizationSwitcher, UserButton } from "@clerk/nextjs";
+import {
+  LayoutDashboardIcon,
+  ListIcon,
+  ChartBarIcon,
+  FolderIcon,
+  UsersIcon,
+  ShieldIcon,
+  CameraIcon,
+  FileTextIcon,
+  Settings2Icon,
+  CircleHelpIcon,
+  SearchIcon,
+  DatabaseIcon,
+  FileChartColumnIcon,
+  FileIcon,
+  CommandIcon,
+  WorkflowIcon,
+  KeyIcon,
+  FlowerIcon,
+} from "lucide-react";
+import { Skeleton } from "./ui/skeleton";
 
 const data = {
   navMain: [
     {
       title: "Workflows",
       url: "/workflows",
-      icon: (
-        <WorkflowIcon />
-      ),
+      icon: <WorkflowIcon />,
     },
     {
       title: "Credentials",
       url: "/credentials",
-      icon: (
-        <KeyIcon />
-      ),
+      icon: <KeyIcon />,
     },
-   
   ],
-}
+};
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
@@ -44,8 +58,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem className="flex items-center gap-2">
-           <FlowerIcon/>
-              AutoFlow
+            <FlowerIcon />
+            AutoFlow
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
@@ -55,11 +69,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-                         <OrganizationSwitcher/>
-
+            <OrganizationSwitcher />
           </SidebarMenuItem>
           <SidebarMenuItem>
-        <UserButton
+            <UserButton
               showName
               fallback={
                 <Skeleton className="h-8.5 w-full group-data-[collapsible=icon]:size-8 rounded-md border border-border bg-white" />
@@ -81,5 +94,5 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
       </SidebarFooter>
     </Sidebar>
-  )
+  );
 }

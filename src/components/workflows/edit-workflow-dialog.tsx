@@ -1,26 +1,33 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { useForm } from "@tanstack/react-form"
-import { Dialog as DialogPrimitive } from "radix-ui"
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { useRouter } from "next/navigation"
-import useEditWorkflow from "@/hooks/workflows/use-edit-workflow"
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import * as React from "react";
+import { useForm } from "@tanstack/react-form";
+import { Dialog as DialogPrimitive } from "radix-ui";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useRouter } from "next/navigation";
+import useEditWorkflow from "@/hooks/workflows/use-edit-workflow";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 export function EditWorkflowDialog({
   workflow,
   children,
 }: {
-  workflow: { id: string; name: string; description: string | null }
-  children: React.ReactNode
+  workflow: { id: string; name: string; description: string | null };
+  children: React.ReactNode;
 }) {
-  const [open, setOpen] = React.useState(false)
-  const router = useRouter()
-  const editWorkflow = useEditWorkflow()
+  const [open, setOpen] = React.useState(false);
+  const router = useRouter();
+  const editWorkflow = useEditWorkflow();
 
   const form = useForm({
     defaultValues: {
@@ -32,11 +39,11 @@ export function EditWorkflowDialog({
         workflowId: workflow.id,
         name: value.name,
         description: value.description || null,
-      })
-      setOpen(false)
-      router.push(`/workflows/${updated.id}`)
+      });
+      setOpen(false);
+      router.push(`/workflows/${updated.id}`);
     },
-  })
+  });
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -51,9 +58,9 @@ export function EditWorkflowDialog({
 
         <form
           onSubmit={(e) => {
-            e.preventDefault()
-            e.stopPropagation()
-            form.handleSubmit()
+            e.preventDefault();
+            e.stopPropagation();
+            form.handleSubmit();
           }}
           className="flex flex-col gap-4"
         >
@@ -111,5 +118,5 @@ export function EditWorkflowDialog({
         </form>
       </DialogContent>
     </Dialog>
-  )
+  );
 }

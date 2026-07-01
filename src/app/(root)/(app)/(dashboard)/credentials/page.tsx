@@ -18,8 +18,6 @@ import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import useCredentials from "@/hooks/credentials/use-credentials";
 
-
-
 function PageContent() {
   const { isLoaded } = useOrganizationList();
   const [search, setSearch] = useQueryState("q", parseAsString.withDefault(""));

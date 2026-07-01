@@ -48,6 +48,8 @@ model FlowData {
   workflow    Workflow @relation(fields: [workflow_id],references: [id], onDelete: Cascade)
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt
+
+  @@index([workflow_id,org_id])
 }
 
 model Credentials {

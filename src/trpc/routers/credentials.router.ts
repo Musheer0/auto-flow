@@ -7,7 +7,7 @@ import {
   getById,
   getCredentials,
 } from "@/data/credentials";
-import { createTRPCRouter, protectedProcudre } from "../init";
+import { createTRPCRouter, protectedProcedure } from "../init";
 import { NodeType } from "@/generated/prisma/enums";
 
 const requireOrg = (orgId: string | null | undefined): string => {
@@ -17,19 +17,19 @@ const requireOrg = (orgId: string | null | undefined): string => {
 };
 
 export const credentialsRouter = createTRPCRouter({
-  getAll: protectedProcudre.query(async ({ ctx }) => {
+  getAll: protectedProcedure.query(async ({ ctx }) => {
     const orgId = requireOrg(ctx.session.orgId);
     return getCredentials({ orgId });
   }),
 
-  getById: protectedProcudre
+  getById: protectedProcedure
     .input(z.object({ id: z.string().min(1) }))
     .query(async ({ input, ctx }) => {
       const orgId = requireOrg(ctx.session.orgId);
       return getById({ id: input.id, orgId });
     }),
 
-  create: protectedProcudre
+  create: protectedProcedure
     .input(
       z.object({
         name: z.string().min(1).optional(),
@@ -49,7 +49,7 @@ export const credentialsRouter = createTRPCRouter({
       });
     }),
 
-  edit: protectedProcudre
+  edit: protectedProcedure
     .input(
       z.object({
         credentialId: z.string().min(1),
@@ -64,7 +64,7 @@ export const credentialsRouter = createTRPCRouter({
       });
     }),
 
-  delete: protectedProcudre
+  delete: protectedProcedure
     .input(z.object({ id: z.string().min(1) }))
     .mutation(async ({ input, ctx }) => {
       const orgId = requireOrg(ctx.session.orgId);

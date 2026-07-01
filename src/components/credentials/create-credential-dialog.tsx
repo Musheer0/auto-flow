@@ -13,13 +13,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useQueryClient } from "@tanstack/react-query"
+import { useQueryClient } from "@tanstack/react-query";
 import useCreateCredential from "@/hooks/credentials/use-create-credential";
 import { cn } from "@/lib/utils";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../ui/dialog";
 import { NodeType } from "@/generated/prisma/enums";
-
-
 
 const credentialTypes = Object.values(NodeType) as readonly NodeType[];
 
@@ -43,10 +48,10 @@ export function CreateCredentialDialog({
         name: value.name,
         type: value.type,
         secret: value.secret,
-      })
-      formApi.reset()
-      queryClient.invalidateQueries({ queryKey: [["credentials"]] })
-      setOpen(false)
+      });
+      formApi.reset();
+      queryClient.invalidateQueries({ queryKey: [["credentials"]] });
+      setOpen(false);
     },
   });
 
@@ -110,7 +115,7 @@ export function CreateCredentialDialog({
                   <SelectContent>
                     {credentialTypes.map((t) => (
                       <SelectItem key={t} value={t}>
-                        { t}
+                        {t}
                       </SelectItem>
                     ))}
                   </SelectContent>

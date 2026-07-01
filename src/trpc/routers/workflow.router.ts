@@ -6,8 +6,10 @@ import {
   editWorkflow,
   getById,
   getWorkflows,
+  saveWorkflowData,
 } from "@/data/workflow";
-import { createTRPCRouter, protectedProcudre } from "../init";
+import { createTRPCRouter, protectedProcedure } from "../init";
+import { WorkflowDataSchema } from "@/schemas/editor";
 
 const requireOrg = (orgId: string | null | undefined): string => {
   if (!orgId)
@@ -16,19 +18,19 @@ const requireOrg = (orgId: string | null | undefined): string => {
 };
 
 export const workflowsRouter = createTRPCRouter({
-  getAll: protectedProcudre.query(async ({ ctx }) => {
+  getAll: protectedProcedure.query(async ({ ctx }) => {
     const orgId = requireOrg(ctx.session.orgId);
     return getWorkflows({ orgId });
   }),
 
-  getById: protectedProcudre
-    .input(z.object({ id: z.string().min(1) }))
+  getById: protectedProcedure
+    .input(z.object({ id: z.string().min(1),include_data:z.boolean().default(false).optional() }))
     .query(async ({ input, ctx }) => {
       const orgId = requireOrg(ctx.session.orgId);
-      return getById({ id: input.id, orgId });
+      return getById({ id: input.id, orgId,include_data:input.include_data });
     }),
 
-  create: protectedProcudre
+  create: protectedProcedure
     .input(
       z.object({
         name: z.string().min(1).optional(),
@@ -41,7 +43,7 @@ export const workflowsRouter = createTRPCRouter({
       return createWorkflow({ orgId: orgId!, userId, name: input.name });
     }),
 
-  edit: protectedProcudre
+  edit: protectedProcedure
     .input(
       z.object({
         workflowId: z.string().min(1),
@@ -62,10 +64,21 @@ export const workflowsRouter = createTRPCRouter({
       });
     }),
 
-  delete: protectedProcudre
+  delete: protectedProcedure
     .input(z.object({ id: z.string().min(1) }))
     .mutation(async ({ input, ctx }) => {
       const orgId = requireOrg(ctx.session.orgId);
       return deleteWorkflow({ id: input.id, orgId });
+    }),
+  saveWorkflow: protectedProcedure
+    .input(z.object({ workflow_id: z.string(), data: WorkflowDataSchema }))
+    .mutation(async ({ ctx, input }) => {
+      const { orgId, userId } = ctx.session;
+      return saveWorkflowData({
+        workflowId: input.workflow_id,
+        flow_data: input.data,
+        orgId: requireOrg(orgId),
+        userId,
+      });
     }),
 });

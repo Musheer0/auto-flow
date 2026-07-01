@@ -6,7 +6,14 @@ import * as React from "react";
 import { Button } from "@/components/ui/button";
 import useDeleteCredential from "@/hooks/credentials/use-delete-credential";
 import { cn } from "@/lib/utils";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 export function DeleteCredentialDialog({
   credential,

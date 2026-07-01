@@ -1,28 +1,35 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { Dialog as DialogPrimitive } from "radix-ui"
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { useRouter } from "next/navigation"
-import useDeleteWorkflow from "@/hooks/workflows/use-delete-workflow"
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import * as React from "react";
+import { Dialog as DialogPrimitive } from "radix-ui";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
+import useDeleteWorkflow from "@/hooks/workflows/use-delete-workflow";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 export function DeleteWorkflowDialog({
   workflow,
   children,
 }: {
-  workflow: { id: string; name: string }
-  children: React.ReactNode
+  workflow: { id: string; name: string };
+  children: React.ReactNode;
 }) {
-  const [open, setOpen] = React.useState(false)
-  const router = useRouter()
-  const deleteWorkflow = useDeleteWorkflow()
+  const [open, setOpen] = React.useState(false);
+  const router = useRouter();
+  const deleteWorkflow = useDeleteWorkflow();
 
   const handleDelete = async () => {
-    await deleteWorkflow.mutateAsync({ id: workflow.id })
-    setOpen(false)
-    router.push("/workflows")
-  }
+    await deleteWorkflow.mutateAsync({ id: workflow.id });
+    setOpen(false);
+    router.push("/workflows");
+  };
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
@@ -30,7 +37,8 @@ export function DeleteWorkflowDialog({
         <DialogHeader>
           <DialogTitle>Delete workflow</DialogTitle>
           <DialogDescription>
-            Are you sure you want to delete <strong>{workflow.name}</strong>? This action cannot be undone.
+            Are you sure you want to delete <strong>{workflow.name}</strong>?
+            This action cannot be undone.
           </DialogDescription>
         </DialogHeader>
 
@@ -51,5 +59,5 @@ export function DeleteWorkflowDialog({
         </div>
       </DialogContent>
     </Dialog>
-  )
+  );
 }
