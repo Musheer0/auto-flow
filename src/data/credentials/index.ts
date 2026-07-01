@@ -103,7 +103,7 @@ export async function createCredential(
         org_id: orgId,
         user_id: userId,
         name: name?.trim() || "Untitled Credential",
-        type: type as "TELEGRAM_BOT_TOKEN",
+        type: type ,
         secret: encryptedSecret,
       },
     }),

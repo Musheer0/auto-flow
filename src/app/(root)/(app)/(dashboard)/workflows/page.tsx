@@ -13,7 +13,7 @@ import useWorkflows from "@/hooks/workflows/use-workflows";
 
 const PAGE_SIZE = 10;
 
-function Page() {
+function PageContent() {
   const { isLoaded } = useOrganizationList();
 
   const [search, setSearch] = useQueryState("q", parseAsString.withDefault(""));
@@ -176,6 +176,14 @@ function WorkflowsSkeleton() {
         </div>
       ))}
     </div>
+  );
+}
+
+function Page() {
+  return (
+    <React.Suspense fallback={<WorkflowsSkeleton />}>
+      <PageContent />
+    </React.Suspense>
   );
 }
 

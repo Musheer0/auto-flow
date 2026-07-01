@@ -110,8 +110,11 @@ export async function createWorkflow(
         org_id: orgId,
         user_id: userId,
         name: name?.trim() || "Untitled Workflow",
+        
       },
+      
     }),
+  
     redis.del(workflowsByOrgKey(orgId)),
   ]);
 

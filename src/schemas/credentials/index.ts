@@ -1,3 +1,4 @@
+import { NodeType } from "@/generated/prisma/enums";
 import { z } from "zod";
 
 export const getCredentialsSchema = z.object({
@@ -13,7 +14,7 @@ export const createCredentialSchema = z.object({
   orgId: z.string().min(1),
   userId: z.string().min(1),
   name: z.string().min(1).optional(),
-  type: z.string().min(1),
+  type: z.enum(NodeType),
   secret: z.string().min(1),
 });
 

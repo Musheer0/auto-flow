@@ -8,6 +8,7 @@ import {
   getCredentials,
 } from "@/data/credentials";
 import { createTRPCRouter, protectedProcudre } from "../init";
+import { NodeType } from "@/generated/prisma/enums";
 
 const requireOrg = (orgId: string | null | undefined): string => {
   if (!orgId)
@@ -32,7 +33,7 @@ export const credentialsRouter = createTRPCRouter({
     .input(
       z.object({
         name: z.string().min(1).optional(),
-        type: z.string().min(1),
+        type: z.enum(NodeType),
         secret: z.string().min(1),
       }),
     )

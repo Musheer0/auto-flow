@@ -18,11 +18,9 @@ import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import useCredentials from "@/hooks/credentials/use-credentials";
 
-const nodeTypeLabels: Record<string, string> = {
-  TELEGRAM_BOT_TOKEN: "Telegram Bot Token",
-};
 
-function Page() {
+
+function PageContent() {
   const { isLoaded } = useOrganizationList();
   const [search, setSearch] = useQueryState("q", parseAsString.withDefault(""));
 
@@ -77,7 +75,7 @@ function Page() {
               <div className="flex-1">
                 <p className="font-medium">{credential.name}</p>
                 <p className="text-sm text-muted-foreground">
-                  {nodeTypeLabels[credential.type] ?? credential.type}
+                  {credential.type}
                 </p>
               </div>
               <span className="text-xs text-muted-foreground">
@@ -126,6 +124,14 @@ function Page() {
         </div>
       )}
     </div>
+  );
+}
+
+function Page() {
+  return (
+    <React.Suspense fallback={<CredentialsSkeleton />}>
+      <PageContent />
+    </React.Suspense>
   );
 }
 
